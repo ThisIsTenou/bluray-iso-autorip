@@ -64,7 +64,7 @@ DISKTITLE=$(echo "${DISKTITLERAW}_-_$NOWDATE")
 
 echo "[INFO] $sourcedrive: Started ripping process"
 
-dd if=$sourcedrive of=$outputdir/$DISKTITLE.iso
+dd if=$sourcedrive of=$outputdir/$DISKTITLE.iso 1> /dev/null
 if [ $? -eq 0 ]; then
 	echo "[INFO] $sourcedrive: Ripping finished."
         exit 0
