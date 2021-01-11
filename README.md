@@ -10,7 +10,7 @@ This script has only been tested on Ubuntu 20.04.01. Whilst it might work with o
 # Installation:
 This script depends on some external packages.
 You can ensure they're installed and on the latest version by running this command:
-`sudo apt update && sudo apt install fprintd setcd sed util-linux coreutils`
+`sudo apt update && sudo apt install fprintd setcd sed util-linux coreutils udisks2`
 
 Download the scripts and setting file to a directory of your choice and make the scripts executable (`chmod +x isorip.sh wrapper.sh`).
 Don't forget to adjust the settings.cfg file to your liking.
