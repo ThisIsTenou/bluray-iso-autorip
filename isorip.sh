@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check dependencies
-deps=("printf|fprintd" "setcd|setcd" "sed|sed" "blkid|util-linux" "dd|coreutils")
+deps=("printf|fprintd" "setcd|setcd" "sed|sed" "blkid|util-linux" "dd|coreutils" "udisksctl|udisks2")
 missingdeps=""
 missingdepsinstall="sudo apt install"
 
@@ -62,8 +62,20 @@ DISKTITLERAW=${DISKTITLERAW:-disc}
 NOWDATE=$(date +"%Y-%m-%d_%k-%M-%S")
 DISKTITLE=$(echo "${DISKTITLERAW}_-_$NOWDATE")
 
-echo "[INFO] $sourcedrive: Started ripping process"
+# Check if disc is mounted and attempt to unmount it eventually
+if grep -qs '$sourcedrive ' /proc/mounts; then
+	echo "[INFO] $sourcedrive: Attempting to unmount drive."
+	udisksctl unmount -b $sourcedrive
+	if [ $? -eq 0 ]; then
+        echo "[INFO] $sourcedrive: Successfully nmounted drive."
+    else
+		echo "[WARN] $sourcedrive: Couldn't unmount drive."
+		echo "                     Please do not access the drive whilst the ISO is being created."
+	fi
+fi
 
+# Create ISO
+echo "[INFO] $sourcedrive: Started ripping process"
 dd if=$sourcedrive of=$outputdir/$DISKTITLE.iso status=none
 if [ $? -eq 0 ]; then
 	echo "[INFO] $sourcedrive: Ripping finished."
